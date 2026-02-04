@@ -1,16 +1,123 @@
-# React + Vite
+# Devposit 📱💰
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Devposit es una aplicación móvil para **gestionar ingresos y gastos personales**, desarrollada con **React + Capacitor**, pensada para Android. Permite registrar movimientos, almacenarlos localmente y visualizar la evolución del saldo de forma clara mediante una gráfica temporal.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Funcionalidades
 
-## React Compiler
+- ➕ Registro de **ingresos**
+- ➖ Registro de **gastos**
+- 💾 Persistencia local usando **Capacitor Filesystem** (JSON)
+- 📊 Gráfica de **evolución del saldo diario**
+- 🔄 Actualización en tiempo real al añadir movimientos
+- 📱 App nativa Android (no WebView suelta)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Tecnologías usadas
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React**
+- **Capacitor**
+- **Recharts** (gráficas)
+- **SCSS**
+- **Android Studio**
+
+---
+
+## 📂 Estructura del proyecto
+
+```
+src/
+ ├── components/
+ │   ├── Movimiento.jsx
+ │   ├── FormMovimientos.jsx
+ │   ├── DashboardGrafica.jsx
+ │   └── Grafica.jsx
+ ├── storage/
+ │   └── movimientosStorage.js
+ ├── App.jsx
+ └── main.jsx
+```
+
+---
+
+## 💾 Almacenamiento de datos
+
+Los movimientos se guardan localmente en un archivo JSON usando Capacitor:
+
+```
+/data/data/com.daniel.gestiones/files/movimientos.json
+```
+
+Esto permite que los datos persistan aunque la app se cierre.
+
+---
+
+## 📊 Gráfica de saldo
+
+La gráfica muestra:
+
+- Eje X → Fechas
+- Eje Y → Saldo acumulado
+- Un único punto por día (saldo total diario)
+
+Los datos se recalculan automáticamente cada vez que se añade un movimiento.
+
+---
+
+## ▶️ Ejecutar el proyecto en desarrollo
+
+### Instalar dependencias
+```bash
+npm install
+```
+
+### Ejecutar en navegador
+```bash
+npm run dev
+```
+
+### Build + sincronizar con Android
+```bash
+npm run build
+npx cap sync android
+```
+
+### Ejecutar directamente en un móvil conectado
+```bash
+npx cap run android --device
+```
+
+---
+
+## 📦 Generar APK
+
+Desde Android Studio:
+
+```
+Build → Build Bundle(s) / APK(s) → Build APK(s)
+```
+
+---
+
+## 🚧 Posibles mejoras futuras
+
+- 📆 Filtro por meses
+- 🏷️ Categorías de gastos
+- ☁️ Backup / exportación de datos
+- 🌙 Modo oscuro
+- 📈 Más tipos de gráficas
+
+---
+
+## 👨‍💻 Autor
+
+**Daniel Navarro**
+
+Proyecto personal para aprendizaje y experimentación con React + Capacitor.
+
+---
+
+Siéntete libre de clonar, probar y modificar el proyecto 🚀
+
