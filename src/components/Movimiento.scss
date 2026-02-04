@@ -1,0 +1,29 @@
+.movimiento {
+  display: flex !important;
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  gap: 10px; /* espacio entre columnas */
+  font-size: 15px;
+
+  strong {
+    flex: 1;
+    text-align: right;
+  }
+  .descripcion {
+    flex: 1.5;
+    text-align: center;
+  }
+  small {
+    flex: 1;
+    text-align: left;
+  }
+}
+
+/* Color según tipo */
+.movimiento > strong.ingreso {
+  color: green;
+}
+
+.movimiento > strong.gasto {
+  color: red;
+}

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">devposit</string>
+    <string name="title_activity_main">devposit</string>
+    <string name="package_name">com.daniel.gestiones</string>
+    <string name="custom_url_scheme">com.daniel.gestiones</string>
+</resources>

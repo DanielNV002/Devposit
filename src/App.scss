@@ -1,0 +1,31 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1rem;
+  text-align: center;
+  background-color: #242424;
+  color: white;
+}
+
+.grafica {
+  p {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
+  strong {
+    color: #61dafb;
+    font-size: 20px;
+  }
+}
+
+.popUpMovimiento {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.listaMovimientos {
+  margin-bottom: 40px;
+}
