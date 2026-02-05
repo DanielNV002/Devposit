@@ -12,6 +12,7 @@
     color: white;
     width: 95%;
     text-align: center;
+    border: solid 1px #ccc;
   }
 
   .botones {
@@ -23,6 +24,18 @@
     .botonCancelar {
       background-color: rgb(173, 22, 22);
       color: white;
+    }
+  }
+
+  animation: fadeIn 0.2s ease-out;
+  @keyframes fadeIn {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
     }
   }
 }

@@ -74,12 +74,17 @@ function App() {
       </div>
       <div className="popUpMovimiento">
         {tipoActivo && (
-          <FormMovimiento
-            tipo={tipoActivo}
-            onGuardar={agregarMovimiento}
-            onCerrar={() => setTipoActivo(null)}
-          />
+          <div className="overlay" onClick={() => setTipoActivo(null)}>
+            <div className="modal" onClick={(e) => e.stopPropagation()}>
+              <FormMovimiento
+                tipo={tipoActivo}
+                onGuardar={agregarMovimiento}
+                onCerrar={() => setTipoActivo(null)}
+              />
+            </div>
+          </div>
         )}
+
         <p>Lista de todos los movimientos del mes</p>
       </div>
       <hr />

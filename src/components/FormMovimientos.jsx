@@ -16,8 +16,8 @@ function FormMovimiento({ tipo, onGuardar, onCerrar }) {
   };
 
   return (
-    <div style={modalStyle} className="popUpNuevo">
-      <h3>{tipo === "ingreso" ? "Nuevo ingreso" : "Nuevo gasto"}</h3>
+    <div className="popUpNuevo">
+      <h2>{tipo === "ingreso" ? "Nuevo ingreso" : "Nuevo gasto"}</h2>
 
       <input
         type="number"
