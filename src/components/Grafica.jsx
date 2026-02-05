@@ -16,7 +16,7 @@ function GraficaSaldo({ data }) {
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="fecha" />
-          <YAxis width={30} />
+          <YAxis width={35} />
           <Line
             type="monotone"
             dataKey="saldo"

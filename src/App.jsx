@@ -7,8 +7,11 @@ import "./App.scss";
 import Movimiento from "./components/Movimiento";
 import FormMovimiento from "./components/FormMovimientos";
 import Dashboard from "./components/DashboardGrafica";
+import ResetMovimientos from "./components/ResetMovimientos";
+import ConfirmReset from "./components/ConfirmReset";
 
 function App() {
+  const [mostrarReset, setMostrarReset] = useState(false);
   const [movimientos, setMovimientos] = useState([]);
   const [tipoActivo, setTipoActivo] = useState(null); // "ingreso" | "gasto"
 
@@ -34,6 +37,12 @@ function App() {
     setMovimientos(movConSaldo);
 
     setTipoActivo(null);
+  };
+
+  const vaciarMovimientos = async () => {
+    await guardarMovimientos([]);
+    setMovimientos([]);
+    setMostrarReset(false);
   };
 
   useEffect(() => {
@@ -93,6 +102,14 @@ function App() {
           <Movimiento key={i} {...m} />
         ))}
       </div>
+      <hr />
+      <ResetMovimientos onClick={() => setMostrarReset(true)} />
+      {mostrarReset && (
+        <ConfirmReset
+          onConfirmar={vaciarMovimientos}
+          onCerrar={() => setMostrarReset(false)}
+        />
+      )}
     </div>
   );
 }
