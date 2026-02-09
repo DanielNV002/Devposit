@@ -9,11 +9,14 @@ import FormMovimiento from "./components/FormMovimientos";
 import Dashboard from "./components/DashboardGrafica";
 import ResetMovimientos from "./components/ResetMovimientos";
 import ConfirmReset from "./components/ConfirmReset";
+import Settings from "./components/Settings";
+import { leerTema } from "./storage/temaStorage";
 
 function App() {
   const [mostrarReset, setMostrarReset] = useState(false);
   const [movimientos, setMovimientos] = useState([]);
   const [tipoActivo, setTipoActivo] = useState(null); // "ingreso" | "gasto"
+  const [pantalla, setPantalla] = useState("home");
 
   const agregarMovimiento = async (movimiento) => {
     // Copiar y añadir movimiento al inicio
@@ -54,60 +57,109 @@ function App() {
     cargar();
   }, []);
 
+  useEffect(() => {
+    async function cargarTema() {
+      const tema = await leerTema();
+      if (!tema) return;
+
+      Object.entries(tema).forEach(([key, value]) => {
+        document.documentElement.style.setProperty(`--${key}`, value);
+      });
+    }
+
+    cargarTema();
+  }, []);
+
   return (
     <div className="app">
       <div className="cabecera">
         <h1>Devposit</h1>
-        <p>Tu app para manejar tus movimientos</p>
+        <button
+          onClick={(e) => {
+            e.currentTarget.blur();
+            setPantalla("settings");
+          }}
+        >
+          Ajustes
+        </button>
       </div>
-      <div className="grafica">
-        <p>El saldo actual es de:</p>
-        <hr />
-        <strong>
-          {" "}
-          {movimientos
-            .reduce(
-              (total, m) =>
-                m.tipo === "ingreso" ? total + m.cantidad : total - m.cantidad,
-              0,
-            )
-            .toFixed(2)}{" "}
-          €
-        </strong>
-        <hr />
-        <Dashboard movimientos={movimientos} />
-      </div>
-      <div className="controles">
-        <button onClick={() => setTipoActivo("ingreso")}>Ingreso</button>
-        <button onClick={() => setTipoActivo("gasto")}>Gasto</button>
-      </div>
-      <div className="popUpMovimiento">
-        {tipoActivo && (
-          <div className="overlay" onClick={() => setTipoActivo(null)}>
-            <div className="modal" onClick={(e) => e.stopPropagation()}>
-              <FormMovimiento
-                tipo={tipoActivo}
-                onGuardar={agregarMovimiento}
-                onCerrar={() => setTipoActivo(null)}
-              />
-            </div>
+      {pantalla === "home" && (
+        <>
+          <p>Tu app para manejar tus movimientos</p>
+          <div className="grafica">
+            <p>El saldo actual es de:</p>
+            <hr />
+            <strong>
+              {" "}
+              {movimientos
+                .reduce(
+                  (total, m) =>
+                    m.tipo === "ingreso"
+                      ? total + m.cantidad
+                      : total - m.cantidad,
+                  0,
+                )
+                .toFixed(2)}{" "}
+              €
+            </strong>
+            <hr />
+            <Dashboard movimientos={movimientos} />
           </div>
-        )}
+          <div className="controles">
+            <button
+              onClick={(e) => {
+                e.currentTarget.blur();
+                setTipoActivo("ingreso");
+              }}
+            >
+              Ingreso
+            </button>
+            <button
+              onClick={(e) => {
+                e.currentTarget.blur();
+                setTipoActivo("gasto");
+              }}
+            >
+              Gasto
+            </button>
+          </div>
+          <div className="popUpMovimiento">
+            {tipoActivo && (
+              <div className="overlay" onClick={() => setTipoActivo(null)}>
+                <div className="modal" onClick={(e) => e.stopPropagation()}>
+                  <FormMovimiento
+                    tipo={tipoActivo}
+                    onGuardar={agregarMovimiento}
+                    onCerrar={() => setTipoActivo(null)}
+                  />
+                </div>
+              </div>
+            )}
 
-        <p>Lista de todos los movimientos del mes</p>
-      </div>
-      <hr />
-      <div className="listaMovimientos">
-        {[...movimientos].map((m, i) => (
-          <Movimiento key={i} {...m} />
-        ))}
-      </div>
-      <hr />
-      <ResetMovimientos onClick={() => setMostrarReset(true)} />
-      {mostrarReset && (
-        <ConfirmReset
-          onConfirmar={vaciarMovimientos}
-          onCerrar={() => setMostrarReset(false)}
+            <p>Lista de todos los movimientos del mes</p>
+          </div>
+          <hr />
+          <div className="listaMovimientos">
+            {[...movimientos].map((m, i) => (
+              <Movimiento key={i} {...m} />
+            ))}
+          </div>
+          <hr />
+          <ResetMovimientos onClick={() => setMostrarReset(true)} />
+          {mostrarReset && (
+            <ConfirmReset
+              onConfirmar={vaciarMovimientos}
+              onCerrar={() => setMostrarReset(false)}
+            />
+          )}
+        </>
+      )}
+      {pantalla === "settings" && (
+        <Settings
+          onVolver={(e) => {
+            e.currentTarget.blur();
+            setPantalla("home");
+          }}
         />
       )}
     </div>

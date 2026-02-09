@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: var(--color-fondo-modal);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,8 +9,8 @@
 }
 
 .modalReset {
-  background: black;
-  border: solid 2px #ccc;
+  background: var(--color-negro);
+  border: solid 2px var(--color-borde-modal);
   padding: 1.5rem;
   border-radius: 12px;
   width: 90%;
@@ -18,7 +18,7 @@
   text-align: center;
 
   h3 {
-    color: #ff5252;
+    color: var(--color-cancelar-focus);
     margin-bottom: 1rem;
   }
 
@@ -38,17 +38,12 @@
       border-radius: 8px;
       border: none;
       cursor: pointer;
-      border: solid 2px #ccc;
+      border: solid 2px var(--color-borde-modal);
     }
 
-    // .cancelar {
-    //   background: #444;
-    //   margin-right: 0.5rem;
-    // }
-
     .confirmar {
-      background: #b00020;
-      color: white;
+      background: var(--color-cancelar);
+      color: var(--color-texto);
     }
   }
 

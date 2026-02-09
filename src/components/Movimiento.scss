@@ -21,9 +21,9 @@
 
 /* Color según tipo */
 .movimiento > strong.ingreso {
-  color: green;
+  color: var(--color-ingreso);
 }
 
 .movimiento > strong.gasto {
-  color: red;
+  color: var(--color-gasto);
 }

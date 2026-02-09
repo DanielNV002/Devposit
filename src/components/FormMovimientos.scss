@@ -8,22 +8,22 @@
 
   input {
     border-radius: 5px;
-    background-color: black;
-    color: white;
+    background-color: var(--color-negro);
+    color: var(--color-texto);
     width: 95%;
     text-align: center;
-    border: solid 1px #ccc;
+    border: solid 1px var(--color-borde-modal);
   }
 
   .botones {
     margin-top: 20px;
     button {
       margin: 10px;
-      border: solid 1px #ccc;
+      border: solid 1px var(--color-borde-modal);
     }
     .botonCancelar {
-      background-color: rgb(173, 22, 22);
-      color: white;
+      background-color: var(--color-cancelar);
+      color: var(--color-texto);
     }
   }
 

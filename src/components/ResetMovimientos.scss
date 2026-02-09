@@ -3,18 +3,19 @@
   text-align: center;
 
   .botonReset {
-    background: #8b0000;
-    color: white;
+    background: var(--color-cancelar);
+    color: var(--color-texto);
     padding: 0.6rem 1rem;
     border-radius: 8px;
     border: none;
     cursor: pointer;
+    margin-bottom: 40px;
   }
 
   button:focus,
   button:focus-visible {
-    background-color: rgb(255, 0, 0);
-    color: black;
+    background-color: var(--color-cancelar-focus);
+    color: var(--color-negro);
     border: 1px solid transparent;
   }
 }

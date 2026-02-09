@@ -3,8 +3,23 @@
   margin: 0 auto;
   padding: 1rem;
   text-align: center;
-  background-color: #242424;
-  color: white;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+}
+
+.cabecera {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+
+  button {
+    position: absolute;
+    right: 15px;
+  }
 }
 
 .grafica {
@@ -15,7 +30,7 @@
     justify-content: center;
   }
   strong {
-    color: #61dafb;
+    color: var(--color-texto-primario);
     font-size: 30px;
   }
 }
@@ -36,15 +51,15 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #999;
-    border-radius: 4px;
+    background-color: #888;
+    border-radius: 2px;
   }
 }
 
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: var(--color-fondo-modal);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,9 +67,9 @@
 }
 
 .modal {
-  border: solid 2px #ccc;
+  border: solid 2px var(--color-borde-modal);
   border-radius: 10px;
-  background-color: black;
+  background-color: var(--color-negro);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -66,21 +81,21 @@
 
 button {
   border-radius: 8px;
-  border: 1px solid white;
+  border: 1px solid var(--color-borde-modal);
   padding: 0.6em 1.2em;
   margin: 10px;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
-  color: white;
+  background-color: var(--color-fondo-botones);
+  color: var(--color-texto);
   cursor: pointer;
   transition: border-color 0.25s;
 }
 
 button:focus,
 button:focus-visible {
-  background-color: white;
-  color: black;
+  background-color: var(--color-fondo-botones-focus);
+  color: var(--color-negro);
   border: 1px solid transparent;
 }

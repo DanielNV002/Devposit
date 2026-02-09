@@ -1,9 +1,8 @@
 .graficaSaldo {
-  background: #1a1a1a;
+  background: var(--color-fondo-grafica);
   padding: 1rem;
   border-radius: 12px;
   display: flex;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
   margin-bottom: 20px;
 }
