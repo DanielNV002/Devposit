@@ -1,3 +1,7 @@
+.settings {
+  height: 100vh;
+}
+
 .modal-colores {
   background-color: var(--color-fondo-grafica);
   border-radius: 10px;
@@ -8,7 +12,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.5rem 5rem;
+    padding: 0.5rem 0.5rem;
   }
 }
 
@@ -20,8 +24,37 @@
   padding: 0;
 }
 
-.volver {
-  position: absolute;
-  left: 15px;
-  top: 60px;
+.lista-temas {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lista-temas button.activo {
+  outline: 2px solid var(--color-texto-primario);
+}
+
+.home-indicator {
+  position: fixed;
+  left: -50px; // mitad fuera de la pantalla
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 200px;
+  height: 200px;
+
+  background: var(--color-fondo-swipe);
+  color: var(--color-texto);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+  pointer-events: none;
+
+  border-radius: 50%;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }

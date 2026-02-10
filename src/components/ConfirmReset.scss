@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: var(--color-fondo-modal);
+  background: var(--color-fondo-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,7 +9,7 @@
 }
 
 .modalReset {
-  background: var(--color-negro);
+  background-color: var(--color-fondo-modal);
   border: solid 2px var(--color-borde-modal);
   padding: 1.5rem;
   border-radius: 12px;

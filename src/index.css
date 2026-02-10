@@ -16,6 +16,7 @@
   
   --color-fondo: #242424;
   --color-borde-modal: #cccccc;
+  --color-fondo-overlay: #00000099;
   --color-fondo-modal: #00000099;
   --color-fondo-botones: #1a1a1a;
   --color-fondo-botones-focus: #ffffff;
@@ -26,6 +27,7 @@
   --color-gasto: #ff0000;
   --color-cancelar: #8b0000;
   --color-cancelar-focus: #ad2f2f;
+  --color-fondo-swipe: #ffffff1f;
 
 }
 

@@ -20,7 +20,9 @@ function GraficaSaldo({ data }) {
           <Line
             type="monotone"
             dataKey="saldo"
-            stroke="#2196F3"
+            stroke={getComputedStyle(document.documentElement)
+              .getPropertyValue("--color-texto-primario")
+              .trim()}
             strokeWidth={3}
           />
         </LineChart>

@@ -1,8 +1,20 @@
 import { useEffect, useState } from "react";
+import { useSwipeable } from "react-swipeable";
 import { leerTema, guardarTema } from "../storage/temaStorage";
 import "./Settings.scss";
+import { THEMES } from "../themes/themes";
+import { aplicarTema } from "../themes/themeManager";
 
 function Settings({ onVolver }) {
+  const [dragX, setDragX] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [temaSeleccionado, setTemaSeleccionado] = useState("dark");
+
+  const seleccionarTema = (key) => {
+    setTemaSeleccionado(key);
+    aplicarTema(THEMES[key].colores);
+  };
+
   const VARIABLES_TEMA = {
     "color-fondo": "Color del fondo",
     "color-borde-modal": "Borde del modal",
@@ -18,59 +30,75 @@ function Settings({ onVolver }) {
     "color-cancelar-focus": "Cancelar (focus)",
   };
 
+  const handlers = useSwipeable({
+    onSwiping: (e) => {
+      if (e.deltaX > 0) {
+        setIsDragging(true);
+        setDragX(Math.min(e.deltaX, 120));
+      }
+    },
+
+    onSwiped: (e) => {
+      setIsDragging(false);
+      setDragX(0);
+
+      if (e.deltaX > 80) {
+        onVolver();
+      }
+    },
+
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: false,
+  });
+
   useEffect(() => {
     async function cargarTema() {
       const temaGuardado = await leerTema();
-      if (temaGuardado) {
-        setTema(temaGuardado);
-        Object.entries(temaGuardado).forEach(([key, value]) => {
-          document.documentElement.style.setProperty(`--${key}`, value);
-        });
+
+      if (temaGuardado?.nombre && THEMES[temaGuardado.nombre]) {
+        setTemaSeleccionado(temaGuardado.nombre);
+        aplicarTema(THEMES[temaGuardado.nombre].colores);
+      } else {
+        setTemaSeleccionado("dark");
+        aplicarTema(THEMES.dark.colores);
       }
     }
+
     cargarTema();
   }, []);
 
-  const cambiarColor = (key, value) => {
-    setTema({ ...tema, [key]: value });
-    document.documentElement.style.setProperty(`--${key}`, value);
-  };
-
   const guardar = async () => {
-    await guardarTema(tema);
+    await guardarTema({ nombre: temaSeleccionado });
   };
 
-  const [tema, setTema] = useState(() => {
-    const estilos = getComputedStyle(document.documentElement);
-    const obj = {};
-
-    Object.keys(VARIABLES_TEMA).forEach((key) => {
-      obj[key] = estilos.getPropertyValue(`--${key}`).trim();
-    });
-
-    return obj;
-  });
+  const resetearTema = async () => {
+    setTemaSeleccionado("dark");
+    await aplicarTema(THEMES.dark.colores);
+    await guardarTema({ nombre: "dark" });
+  };
 
   return (
-    <div className="settings">
-      <div className="settings-header">
-        <button className="volver" onClick={onVolver}>
-          Volver
-        </button>
+    <div className="settings" {...handlers}>
+      <div
+        className="home-indicator"
+        style={{
+          opacity: Math.min(dragX / 80, 1),
+        }}
+      >
+        Home
       </div>
       <hr />
-      <h2>Colores</h2>
+      <h2>Tema de Aplicacion</h2>
       <hr />
-      <div className="modal-colores">
-        {Object.entries(tema).map(([key, value]) => (
-          <label key={key}>
-            {VARIABLES_TEMA[key]}
-            <input
-              type="color"
-              value={value}
-              onChange={(e) => cambiarColor(key, e.target.value)}
-            />
-          </label>
+      <div className="lista-temas">
+        {Object.entries(THEMES).map(([key, tema]) => (
+          <button
+            key={key}
+            className={temaSeleccionado === key ? "activo" : ""}
+            onClick={() => seleccionarTema(key)}
+          >
+            {tema.nombre}
+          </button>
         ))}
       </div>
 
@@ -81,6 +109,14 @@ function Settings({ onVolver }) {
         }}
       >
         Guardar
+      </button>
+      <button
+        onClick={async (e) => {
+          e.currentTarget.blur();
+          await resetearTema();
+        }}
+      >
+        Reset
       </button>
     </div>
   );

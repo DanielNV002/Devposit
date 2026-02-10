@@ -12,11 +12,15 @@ import ConfirmReset from "./components/ConfirmReset";
 import Settings from "./components/Settings";
 import { leerTema } from "./storage/temaStorage";
 
+import { useSwipeable } from "react-swipeable";
+
 function App() {
   const [mostrarReset, setMostrarReset] = useState(false);
   const [movimientos, setMovimientos] = useState([]);
   const [tipoActivo, setTipoActivo] = useState(null); // "ingreso" | "gasto"
   const [pantalla, setPantalla] = useState("home");
+  const [dragX, setDragX] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
 
   const agregarMovimiento = async (movimiento) => {
     // Copiar y añadir movimiento al inicio
@@ -48,6 +52,35 @@ function App() {
     setMostrarReset(false);
   };
 
+  const handlers = useSwipeable({
+    onSwiping: (e) => {
+      if (pantalla !== "home") return;
+
+      if (e.deltaX < 0) {
+        setIsDragging(true);
+        setDragX(Math.max(e.deltaX, -120)); // límite visual
+      }
+    },
+
+    onSwiped: (e) => {
+      setIsDragging(false);
+      setDragX(0);
+
+      if (e.deltaX < -80 && pantalla === "home") {
+        setPantalla("settings");
+      }
+    },
+
+    onSwipedRight: () => {
+      if (pantalla === "settings") {
+        setPantalla("home");
+      }
+    },
+
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: false,
+  });
+
   useEffect(() => {
     const cargar = async () => {
       const datos = await leerMovimientos();
@@ -71,20 +104,20 @@ function App() {
   }, []);
 
   return (
-    <div className="app">
+    <div className="app" {...handlers}>
       <div className="cabecera">
         <h1>Devposit</h1>
-        <button
-          onClick={(e) => {
-            e.currentTarget.blur();
-            setPantalla("settings");
-          }}
-        >
-          Ajustes
-        </button>
       </div>
       {pantalla === "home" && (
         <>
+          <div
+            className="settings-indicator"
+            style={{
+              opacity: Math.min(Math.abs(dragX) / 80, 1),
+            }}
+          >
+            Ajustes
+          </div>
           <p>Tu app para manejar tus movimientos</p>
           <div className="grafica">
             <p>El saldo actual es de:</p>
@@ -156,8 +189,7 @@ function App() {
       )}
       {pantalla === "settings" && (
         <Settings
-          onVolver={(e) => {
-            e.currentTarget.blur();
+          onVolver={() => {
             setPantalla("home");
           }}
         />
