@@ -5,7 +5,7 @@ export const THEMES = {
       "color-fondo": "#242424",
       "color-input": "#000000",
       "color-borde-modal": "#cccccc",
-      "color-fondo-overlay": "#000000cd",
+      "color-fondo-overlay": "#000000aa",
       "color-fondo-modal": "#000000",
       "color-fondo-botones": "#1a1a1a",
       "color-fondo-botones-focus": "#ffffff",

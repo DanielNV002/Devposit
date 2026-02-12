@@ -14,10 +14,12 @@ import Historial from "./components/Historial";
 import { leerTema } from "./storage/temaStorage";
 
 import { useSwipeable } from "react-swipeable";
+import { guardarHistorial } from "./storage/historialStorage";
 
 function App() {
   const [mostrarReset, setMostrarReset] = useState(false);
   const [movimientos, setMovimientos] = useState([]);
+  const [historial, setHistorial] = useState({});
   const [tipoActivo, setTipoActivo] = useState(null); // "ingreso" | "gasto"
   const [pantalla, setPantalla] = useState("home");
   const [dragX, setDragX] = useState(0);
@@ -49,7 +51,9 @@ function App() {
 
   const vaciarMovimientos = async () => {
     await guardarMovimientos([]);
+    guardarHistorial({});
     setMovimientos([]);
+    setHistorial({});
     setMostrarReset(false);
   };
 
@@ -69,8 +73,6 @@ function App() {
       setDragX(0);
 
       const limite = 80;
-
-      console.log("Pantalla actual:", pantalla);
 
       if (pantalla === "home") {
         if (e.deltaX < -limite) {
@@ -140,9 +142,7 @@ function App() {
           >
             Historial
           </div>
-          <p>Tu app para manejar tus movimientos</p>
           <div className="grafica">
-            <p>El saldo actual es de:</p>
             <hr />
             <strong>
               {" "}
@@ -202,15 +202,23 @@ function App() {
           <hr />
           <button
             onClick={async () => {
+              // Si no hay movimientos ni saldo inicial, no hacemos nada
               if (movimientos.length === 0) return;
 
-              const { leerHistorial, guardarHistorial } =
-                await import("./storage/historialStorage");
+              // Import dinámico de las funciones correctas
+              const mod = await import("./storage/historialStorage");
+              const { leerHistorial, guardarHistorial } = mod;
+              const movimientosMod =
+                await import("./storage/movimientosStorage");
+              const { guardarMovimientos } = movimientosMod;
 
+              // Leemos historial completo
               const historial = await leerHistorial();
 
+              // Mes actual en formato YYYY-MM
               const mesActual = new Date().toISOString().slice(0, 7);
 
+              // Calculamos ingresos y gastos de este mes
               const totalIngreso = movimientos
                 .filter((m) => m.tipo === "ingreso")
                 .reduce((acc, m) => acc + m.cantidad, 0);
@@ -219,16 +227,43 @@ function App() {
                 .filter((m) => m.tipo === "gasto")
                 .reduce((acc, m) => acc + m.cantidad, 0);
 
+              const variacionMes = totalIngreso - totalGasto;
+
+              // Saldo inicial = saldoFinal del mes anterior (si existe)
+              const mesesPrevios = Object.keys(historial).sort();
+              const saldoInicial = mesesPrevios.length
+                ? historial[mesesPrevios[mesesPrevios.length - 1]].saldoFinal
+                : 0;
+
+              // Saldo final = variación de este mes
+              const saldoFinal = variacionMes;
+
+              // Guardamos el mes cerrado en el historial
               historial[mesActual] = {
+                saldoInicial,
                 totalIngreso,
                 totalGasto,
-                saldoFinal: totalIngreso - totalGasto,
+                saldoFinal,
                 movimientos,
               };
 
               await guardarHistorial(historial);
-              await guardarMovimientos([]);
-              setMovimientos([]);
+
+              // Preparamos el nuevo mes con movimiento inicial si hay saldo final
+              const movimientosNuevoMes =
+                saldoFinal > 0
+                  ? [
+                      {
+                        tipo: "ingreso",
+                        cantidad: saldoFinal,
+                        descripcion: "Saldo inicial",
+                        fecha: new Date(),
+                      },
+                    ]
+                  : [];
+
+              await guardarMovimientos(movimientosNuevoMes);
+              setMovimientos(movimientosNuevoMes);
             }}
           >
             Cerrar mes
