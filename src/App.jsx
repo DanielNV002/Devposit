@@ -10,6 +10,7 @@ import Dashboard from "./components/DashboardGrafica";
 import ResetMovimientos from "./components/ResetMovimientos";
 import ConfirmReset from "./components/ConfirmReset";
 import Settings from "./components/Settings";
+import Historial from "./components/Historial";
 import { leerTema } from "./storage/temaStorage";
 
 import { useSwipeable } from "react-swipeable";
@@ -54,11 +55,12 @@ function App() {
 
   const handlers = useSwipeable({
     onSwiping: (e) => {
-      if (pantalla !== "home") return;
+      setIsDragging(true);
 
       if (e.deltaX < 0) {
-        setIsDragging(true);
-        setDragX(Math.max(e.deltaX, -120)); // límite visual
+        setDragX(Math.max(e.deltaX, -100));
+      } else {
+        setDragX(Math.min(e.deltaX, 100));
       }
     },
 
@@ -66,13 +68,23 @@ function App() {
       setIsDragging(false);
       setDragX(0);
 
-      if (e.deltaX < -80 && pantalla === "home") {
-        setPantalla("settings");
-      }
-    },
+      const limite = 80;
 
-    onSwipedRight: () => {
-      if (pantalla === "settings") {
+      console.log("Pantalla actual:", pantalla);
+
+      if (pantalla === "home") {
+        if (e.deltaX < -limite) {
+          setPantalla("settings");
+        } else if (e.deltaX > limite) {
+          setPantalla("historial");
+        }
+      }
+
+      if (pantalla === "settings" && e.deltaX > limite) {
+        setPantalla("home");
+      }
+
+      if (pantalla === "historial" && e.deltaX < -limite) {
         setPantalla("home");
       }
     },
@@ -104,19 +116,29 @@ function App() {
   }, []);
 
   return (
-    <div className="app" {...handlers}>
+    <div className="app">
       <div className="cabecera">
         <h1>Devposit</h1>
       </div>
       {pantalla === "home" && (
-        <>
+        <div {...handlers}>
           <div
             className="settings-indicator"
             style={{
-              opacity: Math.min(Math.abs(dragX) / 80, 1),
+              opacity: dragX < 0 ? Math.min(Math.abs(dragX) / 80, 1) : 0,
+              transform: `translateY(-50%) translateX(${Math.max(dragX, -40)}px)`,
             }}
           >
             Ajustes
+          </div>
+          <div
+            className="historial-indicator"
+            style={{
+              opacity: dragX > 0 ? Math.min(dragX / 80, 1) : 0,
+              transform: `translateY(-50%) translateX(${Math.min(dragX, 40)}px)`,
+            }}
+          >
+            Historial
           </div>
           <p>Tu app para manejar tus movimientos</p>
           <div className="grafica">
@@ -178,6 +200,40 @@ function App() {
             ))}
           </div>
           <hr />
+          <button
+            onClick={async () => {
+              if (movimientos.length === 0) return;
+
+              const { leerHistorial, guardarHistorial } =
+                await import("./storage/historialStorage");
+
+              const historial = await leerHistorial();
+
+              const mesActual = new Date().toISOString().slice(0, 7);
+
+              const totalIngreso = movimientos
+                .filter((m) => m.tipo === "ingreso")
+                .reduce((acc, m) => acc + m.cantidad, 0);
+
+              const totalGasto = movimientos
+                .filter((m) => m.tipo === "gasto")
+                .reduce((acc, m) => acc + m.cantidad, 0);
+
+              historial[mesActual] = {
+                totalIngreso,
+                totalGasto,
+                saldoFinal: totalIngreso - totalGasto,
+                movimientos,
+              };
+
+              await guardarHistorial(historial);
+              await guardarMovimientos([]);
+              setMovimientos([]);
+            }}
+          >
+            Cerrar mes
+          </button>
+
           <ResetMovimientos onClick={() => setMostrarReset(true)} />
           {mostrarReset && (
             <ConfirmReset
@@ -185,14 +241,13 @@ function App() {
               onCerrar={() => setMostrarReset(false)}
             />
           )}
-        </>
+        </div>
       )}
       {pantalla === "settings" && (
-        <Settings
-          onVolver={() => {
-            setPantalla("home");
-          }}
-        />
+        <Settings onVolver={() => setPantalla("home")} />
+      )}
+      {pantalla === "historial" && (
+        <Historial onVolver={() => setPantalla("home")} />
       )}
     </div>
   );

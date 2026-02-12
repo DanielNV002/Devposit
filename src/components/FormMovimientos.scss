@@ -9,7 +9,7 @@
 }
 
 .modal {
-  background-color: var(--color-fondo-modal);
+  background: var(--color-fondo-modal);
 }
 
 .popUpNuevo {
@@ -22,7 +22,7 @@
 
   input {
     border-radius: 5px;
-    background-color: var(--color-negro);
+    background: var(--color-input);
     color: var(--color-texto);
     width: 95%;
     text-align: center;

@@ -34,14 +34,14 @@
   outline: 2px solid var(--color-texto-primario);
 }
 
-.home-indicator {
+.settings-to-home-indicator {
   position: fixed;
   left: -50px; // mitad fuera de la pantalla
   top: 50%;
   transform: translateY(-50%);
 
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
 
   background: var(--color-fondo-swipe);
   color: var(--color-texto);

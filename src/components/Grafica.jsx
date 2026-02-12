@@ -3,7 +3,6 @@ import {
   Line,
   XAxis,
   YAxis,
-  Tooltip,
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
@@ -14,9 +13,24 @@ function GraficaSaldo({ data }) {
     <div className="graficaSaldo">
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="fecha" />
-          <YAxis width={35} />
+          <CartesianGrid
+            stroke={getComputedStyle(document.documentElement)
+              .getPropertyValue("--color-texto")
+              .trim()}
+            strokeDasharray="3 3"
+          />
+          <XAxis
+            stroke={getComputedStyle(document.documentElement)
+              .getPropertyValue("--color-texto")
+              .trim()}
+            dataKey="fecha"
+          />
+          <YAxis
+            stroke={getComputedStyle(document.documentElement)
+              .getPropertyValue("--color-texto")
+              .trim()}
+            width={35}
+          />
           <Line
             type="monotone"
             dataKey="saldo"

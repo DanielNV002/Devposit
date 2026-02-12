@@ -12,9 +12,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --color-negro: #000000;
-  
   --color-fondo: #242424;
+  --color-input: #000000;
   --color-borde-modal: #cccccc;
   --color-fondo-overlay: #00000099;
   --color-fondo-modal: #00000099;

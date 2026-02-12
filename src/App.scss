@@ -3,7 +3,7 @@
   margin: 0 auto;
   padding: 1rem;
   text-align: center;
-  background-color: var(--color-fondo);
+  background: var(--color-fondo);
   color: var(--color-texto);
 }
 
@@ -71,7 +71,7 @@
 .modal {
   border: solid 2px var(--color-borde-modal);
   border-radius: 10px;
-  background-color: var(--color-negro);
+  background-color: var(--color-input);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -98,7 +98,7 @@ button {
 button:focus,
 button:focus-visible {
   background-color: var(--color-fondo-botones-focus);
-  color: var(--color-negro);
+  color: var(--color-input);
   border: 1px solid transparent;
 }
 
@@ -108,8 +108,33 @@ button:focus-visible {
   top: 50%;
   transform: translateY(-50%);
 
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
+
+  background: var(--color-fondo-swipe);
+  color: var(--color-texto);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+  pointer-events: none;
+
+  border-radius: 50%;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.historial-indicator {
+  position: fixed;
+  left: -50px; // mitad fuera de la pantalla
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 180px;
+  height: 180px;
 
   background: var(--color-fondo-swipe);
   color: var(--color-texto);

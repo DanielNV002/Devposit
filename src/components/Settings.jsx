@@ -15,21 +15,6 @@ function Settings({ onVolver }) {
     aplicarTema(THEMES[key].colores);
   };
 
-  const VARIABLES_TEMA = {
-    "color-fondo": "Color del fondo",
-    "color-borde-modal": "Borde del modal",
-    "color-fondo-modal": "Fondo del modal",
-    "color-fondo-botones": "Fondo de botones",
-    "color-fondo-botones-focus": "Fondo botones (focus)",
-    "color-fondo-grafica": "Fondo de gráfica",
-    "color-texto": "Color del texto",
-    "color-texto-primario": "Texto primario",
-    "color-ingreso": "Color de Ingreso",
-    "color-gasto": "Color de Gasto",
-    "color-cancelar": "Color cancelar",
-    "color-cancelar-focus": "Cancelar (focus)",
-  };
-
   const handlers = useSwipeable({
     onSwiping: (e) => {
       if (e.deltaX > 0) {
@@ -80,9 +65,10 @@ function Settings({ onVolver }) {
   return (
     <div className="settings" {...handlers}>
       <div
-        className="home-indicator"
+        className="settings-to-home-indicator"
         style={{
-          opacity: Math.min(dragX / 80, 1),
+          opacity: dragX > 0 ? Math.min(dragX / 80, 1) : 0,
+          transform: `translateY(-50%) translateX(${Math.min(dragX, 40)}px)`,
         }}
       >
         Home

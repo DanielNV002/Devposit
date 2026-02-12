@@ -1,0 +1,24 @@
+.historial-to-home-indicator {
+  position: fixed;
+  right: -50px; // mitad fuera de la pantalla
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 180px;
+  height: 180px;
+
+  background: var(--color-fondo-swipe);
+  color: var(--color-texto);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+  pointer-events: none;
+
+  border-radius: 50%;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
