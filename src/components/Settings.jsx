@@ -104,6 +104,12 @@ function Settings({ onVolver }) {
       >
         Reset
       </button>
+
+      <div className="creditos">
+        All made by Daniel Navarro
+        <br />
+        <a href="https://github.com/DanielNV002">GitHub</a>
+      </div>
     </div>
   );
 }

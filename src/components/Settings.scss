@@ -58,3 +58,13 @@
     opacity 0.2s ease,
     transform 0.2s ease;
 }
+
+.creditos{
+  position: absolute;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.9rem;
+  color: var(--color-texto);
+  text-align: center;
+}
