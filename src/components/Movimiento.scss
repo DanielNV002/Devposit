@@ -6,16 +6,22 @@
   font-size: 15px;
 
   strong {
+    display: flex;
     flex: 1;
     text-align: right;
+    justify-content: right;
+    align-items: center;
   }
   .descripcion {
-    flex: 1.5;
+    flex: 0.8;
     text-align: center;
+    align-items: center;
   }
   small {
-    flex: 1;
+    display: flex;
+    flex: 0.5;
     text-align: left;
+    align-items: center;
   }
 }
 

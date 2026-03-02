@@ -10,7 +10,7 @@ function Movimiento({ tipo, cantidad, descripcion, fecha }) {
       <div className="descripcion">{descripcion}</div>
       <hr />
       <strong className={tipo === "ingreso" ? "ingreso" : "gasto"}>
-        {tipo === "ingreso" ? "+" : "-"} {cantidad}€
+        {tipo === "ingreso" ? "+" : "-"} {cantidad.toFixed(2)}€
       </strong>
     </div>
   );

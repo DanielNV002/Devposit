@@ -128,7 +128,10 @@ function App() {
             className="settings-indicator"
             style={{
               opacity: dragX < 0 ? Math.min(Math.abs(dragX) / 80, 1) : 0,
-              transform: `translateY(-50%) translateX(${Math.max(dragX, -40)}px)`,
+              transform: `translateY(-50%) translateX(${Math.max(
+                dragX,
+                -40,
+              )}px)`,
             }}
           >
             Ajustes
@@ -137,7 +140,10 @@ function App() {
             className="historial-indicator"
             style={{
               opacity: dragX > 0 ? Math.min(dragX / 80, 1) : 0,
-              transform: `translateY(-50%) translateX(${Math.min(dragX, 40)}px)`,
+              transform: `translateY(-50%) translateX(${Math.min(
+                dragX,
+                40,
+              )}px)`,
             }}
           >
             Historial
@@ -208,8 +214,9 @@ function App() {
               // Import dinámico de las funciones correctas
               const mod = await import("./storage/historialStorage");
               const { leerHistorial, guardarHistorial } = mod;
-              const movimientosMod =
-                await import("./storage/movimientosStorage");
+              const movimientosMod = await import(
+                "./storage/movimientosStorage"
+              );
               const { guardarMovimientos } = movimientosMod;
 
               // Leemos historial completo
