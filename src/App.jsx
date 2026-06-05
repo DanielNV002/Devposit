@@ -6,6 +6,7 @@ import {
 import "./App.scss";
 import Movimiento from "./components/Movimiento";
 import FormMovimiento from "./components/FormMovimientos";
+import FormCambioMovimiento from "./components/FormCambioMovimiento";
 import Dashboard from "./components/DashboardGrafica";
 import ResetMovimientos from "./components/ResetMovimientos";
 import ConfirmReset from "./components/ConfirmReset";
@@ -19,11 +20,25 @@ import { guardarHistorial } from "./storage/historialStorage";
 function App() {
   const [mostrarReset, setMostrarReset] = useState(false);
   const [movimientos, setMovimientos] = useState([]);
+  const [movimientoEditando, setMovimientoEditando] = useState(null);
   const [historial, setHistorial] = useState({});
-  const [tipoActivo, setTipoActivo] = useState(null); // "ingreso" | "gasto"
+  const [tipoActivo, setTipoActivo] = useState(null);
   const [pantalla, setPantalla] = useState("home");
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+
+  const movimientosOrdenados = [...movimientos].sort(
+    (a, b) => new Date(b.fecha) - new Date(a.fecha),
+  );
+
+  const actualizarMovimiento = (movActualizado) => {
+    const nuevos = movimientos.map((m) =>
+      m === movimientoEditando ? movActualizado : m,
+    );
+
+    setMovimientos(nuevos);
+    setMovimientoEditando(null);
+  };
 
   const agregarMovimiento = async (movimiento) => {
     // Copiar y añadir movimiento al inicio
@@ -201,9 +216,27 @@ function App() {
           </div>
           <hr />
           <div className="listaMovimientos">
-            {[...movimientos].map((m, i) => (
-              <Movimiento key={i} {...m} />
+            {movimientosOrdenados.map((m, i) => (
+              <Movimiento
+                key={i}
+                {...m}
+                onClick={() => setMovimientoEditando(m)}
+              />
             ))}
+            {movimientoEditando && (
+              <div
+                className="overlay"
+                onClick={() => setMovimientoEditando(null)}
+              >
+                <div className="modal" onClick={(e) => e.stopPropagation()}>
+                  <FormCambioMovimiento
+                    movimiento={movimientoEditando}
+                    onGuardar={actualizarMovimiento}
+                    onCerrar={() => setMovimientoEditando(null)}
+                  />
+                </div>
+              </div>
+            )}
           </div>
           <hr />
           <button

@@ -27,12 +27,17 @@
     width: 95%;
     text-align: center;
     border: solid 1px var(--color-borde-modal);
+
+    &::placeholder {
+      color: var(--color-texto);
+      opacity: 0.6; // 👈 opcional (queda más fino)
+    }
   }
 
   .botones {
-    margin-top: 20px;
+    margin-top: 10px;
     button {
-      margin: 10px;
+      margin: 8px;
       border: solid 1px var(--color-borde-modal);
     }
     .botonCancelar {

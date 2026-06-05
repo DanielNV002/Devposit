@@ -1,31 +1,41 @@
 .movimiento {
-  display: flex !important;
-  padding: 5px;
-  margin-bottom: 5px;
-  gap: 25px; /* espacio entre columnas */
+  display: flex;
+  align-items: center;
+  padding: 8px 5px;
   font-size: 15px;
-
-  strong {
-    display: flex;
-    flex: 1;
-    text-align: right;
-    justify-content: right;
-    align-items: center;
-  }
-  .descripcion {
-    flex: 0.8;
-    text-align: center;
-    align-items: center;
-  }
-  small {
-    display: flex;
-    flex: 0.5;
-    text-align: left;
-    align-items: center;
-  }
+  border-bottom: 1px solid var(--color-texto);
 }
 
-/* Color según tipo */
+/* FECHA */
+.fecha {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding-right: 10px;
+  border-right: 1px solid var(--color-texto);
+}
+
+/* DESCRIPCIÓN */
+.descripcion {
+  flex: 1;
+  min-width: 0;
+  padding: 0 10px;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  text-align: center;
+}
+
+/* CANTIDAD */
+.movimiento > strong {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding-left: 10px;
+  border-left: 1px solid var(--color-texto);
+}
+
+/* COLORES */
 .movimiento > strong.ingreso {
   color: var(--color-ingreso);
 }

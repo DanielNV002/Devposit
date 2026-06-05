@@ -1,36 +1,36 @@
 import "./FormMovimientos.scss";
 import { useState } from "react";
 
-function FormMovimiento({ tipo, onGuardar, onCerrar }) {
-  const [cantidad, setCantidad] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [fecha, setFecha] = useState("");
+function FormCambioMovimiento({ movimiento, onGuardar, onCerrar }) {
+  const [cantidad, setCantidad] = useState(movimiento.cantidad);
+  const [descripcion, setDescripcion] = useState(movimiento.descripcion);
+  const [fecha, setFecha] = useState(
+    new Date(movimiento.fecha).toISOString().split("T")[0],
+  );
 
   const guardar = () => {
     if (!cantidad) return;
 
     onGuardar({
-      tipo,
+      ...movimiento, // 👈 mantenemos lo anterior
       cantidad: Number(cantidad),
       descripcion,
-      fecha: fecha ? new Date(fecha) : new Date(),
+      fecha: new Date(fecha),
     });
   };
 
   return (
     <div className="popUpNuevo">
-      <h2>{tipo === "ingreso" ? "Nuevo ingreso" : "Nuevo gasto"}</h2>
+      <h2>Editar movimiento</h2>
 
       <input
         type="number"
-        placeholder="Importe"
         value={cantidad}
         onChange={(e) => setCantidad(e.target.value)}
       />
 
       <input
         type="text"
-        placeholder="Descripción"
         value={descripcion}
         onChange={(e) => setDescripcion(e.target.value)}
       />
@@ -45,10 +45,10 @@ function FormMovimiento({ tipo, onGuardar, onCerrar }) {
         <button className="botonCancelar" onClick={onCerrar}>
           Cancelar
         </button>
-        <button onClick={guardar}>Guardar</button>
+        <button onClick={guardar}>Guardar cambios</button>
       </div>
     </div>
   );
 }
 
-export default FormMovimiento;
+export default FormCambioMovimiento;
