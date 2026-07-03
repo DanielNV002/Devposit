@@ -14,6 +14,9 @@ import Settings from "./components/Settings";
 import Historial from "./components/Historial";
 import { leerTema } from "./storage/temaStorage";
 
+import { THEMES } from "./themes/themes";
+import { aplicarTema } from "./themes/themeManager";
+
 import { useSwipeable } from "react-swipeable";
 import { guardarHistorial } from "./storage/historialStorage";
 
@@ -26,6 +29,10 @@ function App() {
   const [pantalla, setPantalla] = useState("home");
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+
+  movimientos.forEach((m) => {
+    console.log(m.descripcion, m.fecha, new Date(m.fecha).toISOString());
+  });
 
   const movimientosOrdenados = [...movimientos].sort(
     (a, b) => new Date(b.fecha) - new Date(a.fecha),
@@ -121,12 +128,13 @@ function App() {
 
   useEffect(() => {
     async function cargarTema() {
-      const tema = await leerTema();
-      if (!tema) return;
+      const temaGuardado = await leerTema();
 
-      Object.entries(tema).forEach(([key, value]) => {
-        document.documentElement.style.setProperty(`--${key}`, value);
-      });
+      if (temaGuardado?.nombre && THEMES[temaGuardado.nombre]) {
+        aplicarTema(THEMES[temaGuardado.nombre].colores);
+      } else {
+        aplicarTema(THEMES.dark.colores);
+      }
     }
 
     cargarTema();

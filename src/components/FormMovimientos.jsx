@@ -9,11 +9,28 @@ function FormMovimiento({ tipo, onGuardar, onCerrar }) {
   const guardar = () => {
     if (!cantidad) return;
 
+    let fechaMovimiento;
+
+    if (fecha) {
+      fechaMovimiento = new Date(fecha);
+
+      const ahora = new Date();
+
+      fechaMovimiento.setHours(
+        ahora.getHours(),
+        ahora.getMinutes(),
+        ahora.getSeconds(),
+        ahora.getMilliseconds(),
+      );
+    } else {
+      fechaMovimiento = new Date();
+    }
+
     onGuardar({
       tipo,
       cantidad: Number(cantidad),
       descripcion,
-      fecha: fecha ? new Date(fecha) : new Date(),
+      fecha: fechaMovimiento,
     });
   };
 
